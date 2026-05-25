@@ -227,7 +227,7 @@ const togglePlayerHistory = (playerIndex: number) => {
          type="date"
          value={gameDate}
          onChange={(e) => setGameDate(e.target.value)}
-         className="border rounded-lg px-3 py-3 w-full text-black text-lg"
+         className="border rounded-lg px-3 py-3 max-w-full text-black text-lg"
        />
      </div>
 
@@ -318,8 +318,8 @@ const togglePlayerHistory = (playerIndex: number) => {
                     updated[playerIndex].position = e.target.value;
                     setPlayers(updated);
                   }}
-                  placeholder="守備位置"
-                  className="border px-2 py-1 rounded text-sm w-24"
+                  placeholder="例：遊"
+                  className="border px-3 py-2 rounded text-sm w-28 text-center"
                 />
               </div>
 
