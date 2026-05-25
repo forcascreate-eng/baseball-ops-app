@@ -54,6 +54,7 @@ export default function Home() {
   const [openPlayers, setOpenPlayers] = useState<number[]>([]);
   const [currentInning, setCurrentInning] = useState(1);
   const [loaded, setLoaded] = useState(false);
+  const [gameTitle, setGameTitle] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem("players");
@@ -61,7 +62,27 @@ export default function Home() {
       setPlayers(normalizePlayers(JSON.parse(saved)));
     }
     setLoaded(true);
-  }, []);
+ 
+  useEffect(() => {
+  const saved = localStorage.getItem("players");
+  const savedGameTitle = localStorage.getItem("gameTitle");
+
+  if (saved) {
+    setPlayers(normalizePlayers(JSON.parse(saved)));
+  }
+
+  if (savedGameTitle) {
+    setGameTitle(savedGameTitle);
+  }
+
+  setLoaded(true);
+}, []);
+
+  useEffect(() => {
+  if (loaded) {
+    localStorage.setItem("gameTitle", gameTitle);
+  }
+}, [gameTitle, loaded]);
 
   useEffect(() => {
     if (loaded) {
@@ -185,6 +206,12 @@ const togglePlayerHistory = (playerIndex: number) => {
       <h1 className="text-3xl font-bold mb-4">
         野球 OPS記録アプリ
       </h1>
+      <input
+        value={gameTitle}
+        onChange={(e) => setGameTitle(e.target.value)}
+        placeholder="例：vs イーグルス / 春季大会1回戦"
+        className="border rounded-lg px-3 py-2 mb-4 w-full text-black"
+     />
 
       <div className="border rounded-xl p-4 mb-4 bg-gray-100 text-black">
         <h2 className="font-bold mb-2">チーム累計</h2>
