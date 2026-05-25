@@ -13,6 +13,7 @@ type PlateAppearance = {
 
 type Player = {
   name: string;
+  position?: string;
   results: PlateAppearance[];
   career: {
     results: PlateAppearance[];
@@ -29,6 +30,7 @@ const initialPlayers = (): Player[] =>
     name: `選手${i + 1}`,
     results: [],
     career: { results: [] },
+    position: "",
   }));
 
 const normalizePlayers = (data: any[]): Player[] => {
@@ -55,10 +57,14 @@ export default function Home() {
   const [currentInning, setCurrentInning] = useState(1);
   const [loaded, setLoaded] = useState(false);
   const [gameTitle, setGameTitle] = useState("");
+  const [gameDate, setGameDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
 
   useEffect(() => {
   const saved = localStorage.getItem("players");
   const savedGameTitle = localStorage.getItem("gameTitle");
+  const savedGameDate = localStorage.getItem("gameDate");
 
   if (saved) {
     setPlayers(normalizePlayers(JSON.parse(saved)));
@@ -67,6 +73,9 @@ export default function Home() {
   if (savedGameTitle) {
     setGameTitle(savedGameTitle);
   }
+  if (savedGameDate) {
+  setGameDate(savedGameDate);
+  }
 
   setLoaded(true);
 }, []);
@@ -74,6 +83,7 @@ export default function Home() {
   useEffect(() => {
   if (loaded) {
     localStorage.setItem("gameTitle", gameTitle);
+    localStorage.setItem("gameDate", gameDate);
   }
 }, [gameTitle, loaded]);
 
@@ -204,7 +214,14 @@ const togglePlayerHistory = (playerIndex: number) => {
         onChange={(e) => setGameTitle(e.target.value)}
         placeholder="例：vs イーグルス / 春季大会1回戦"
         className="border rounded-lg px-3 py-2 mb-4 w-full text-black"
-     />
+      />
+
+      <input
+        type="date"
+        value={gameDate}
+        onChange={(e) => setGameDate(e.target.value)}
+        className="border rounded-lg px-3 py-2 mb-4 w-full text-black"
+      />
 
       <div className="border rounded-xl p-4 mb-4 bg-gray-100 text-black">
         <h2 className="font-bold mb-2">チーム累計</h2>
@@ -281,9 +298,20 @@ const togglePlayerHistory = (playerIndex: number) => {
                 </button>
 
                 <input
-                  value={player.name}
-                  onChange={(e) => changeName(playerIndex, e.target.value)}
-                  className="border px-2 py-1 rounded font-bold"
+                   value={player.name}
+                   onChange={(e) => changeName(playerIndex, e.target.value)}
+                   className="border px-2 py-1 rounded font-bold"
+                />
+
+                <input
+                  value={player.position || ""}
+                  onChange={(e) => {
+                    const updated = [...players];
+                    updated[playerIndex].position = e.target.value;
+                    setPlayers(updated);
+                  }}
+                  placeholder="守備位置"
+                  className="border px-2 py-1 rounded text-sm w-24"
                 />
               </div>
 
