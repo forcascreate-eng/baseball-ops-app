@@ -57,13 +57,19 @@ export default function Home() {
   const [gameTitle, setGameTitle] = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem("players");
-    if (saved) {
-      setPlayers(normalizePlayers(JSON.parse(saved)));
-    }
-    setLoaded(true);
- 
-  useEffect(() => {
+  const saved = localStorage.getItem("players");
+  const savedGameTitle = localStorage.getItem("gameTitle");
+
+  if (saved) {
+    setPlayers(normalizePlayers(JSON.parse(saved)));
+  }
+
+  if (savedGameTitle) {
+    setGameTitle(savedGameTitle);
+  }
+
+  setLoaded(true);
+}, []);
   const saved = localStorage.getItem("players");
   const savedGameTitle = localStorage.getItem("gameTitle");
 
@@ -360,7 +366,7 @@ const togglePlayerHistory = (playerIndex: number) => {
 
               <div className="space-y-2">
                 {openPlayers.includes(playerIndex) &&
-　　　　　　　　　　player.results.map((pa, resultIndex) => (
+                  player.results.map((pa, resultIndex) => (
                   <div
                     key={resultIndex}
                     className="flex items-center gap-2 text-sm"
