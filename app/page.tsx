@@ -70,19 +70,6 @@ export default function Home() {
 
   setLoaded(true);
 }, []);
-  const saved = localStorage.getItem("players");
-  const savedGameTitle = localStorage.getItem("gameTitle");
-
-  if (saved) {
-    setPlayers(normalizePlayers(JSON.parse(saved)));
-  }
-
-  if (savedGameTitle) {
-    setGameTitle(savedGameTitle);
-  }
-
-  setLoaded(true);
-}, []);
 
   useEffect(() => {
   if (loaded) {
