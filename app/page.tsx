@@ -153,6 +153,22 @@ export default function Home() {
     setPlayers(updated);
   };
 
+  const resetPlayerGame = (playerIndex: number) => {
+  if (confirm("この選手の今回の試合記録を削除しますか？")) {
+    const updated = [...players];
+    updated[playerIndex].results = [];
+    setPlayers(updated);
+  }
+};
+
+const resetPlayerCareer = (playerIndex: number) => {
+  if (confirm("この選手の通算成績を削除しますか？")) {
+    const updated = [...players];
+    updated[playerIndex].career.results = [];
+    setPlayers(updated);
+  }
+};
+
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
 
@@ -162,7 +178,7 @@ export default function Home() {
         野球 OPS記録アプリ
       </h1>
 
-      <div className="border rounded-xl p-4 mb-4 bg-gray-100">
+      <div className="border rounded-xl p-4 mb-4 bg-gray-100 text-black">
         <h2 className="font-bold mb-2">チーム累計</h2>
         <div>
           打数: {teamStats.atBats} / 安打: {teamStats.hits} / HR:{" "}
@@ -254,22 +270,53 @@ export default function Home() {
               </div>
 
               <div className="border rounded-lg p-3 mb-3 bg-yellow-100 text-black">
-              <div className="font-bold text-lg mb-2">個人通算</div>
+                <div className="font-bold text-lg mb-2">個人通算</div>
 
-              <div className="grid grid-cols-2 gap-2 text-sm mb-2">
-                <div>打数: {careerStats.atBats}</div>
-                <div>安打: {careerStats.hits}</div>
-                <div>HR: {careerStats.homeRuns}</div>
-                <div>四球: {careerStats.walks}</div>
+                <div className="grid grid-cols-2 gap-2 text-sm mb-2">
+                  <div>打数: {careerStats.atBats}</div>
+                  <div>安打: {careerStats.hits}</div>
+                  <div>HR: {careerStats.homeRuns}</div>
+                  <div>四球: {careerStats.walks}</div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 font-bold">
+                  <div>打率: {careerStats.avg}</div>
+                  <div>出塁率: {careerStats.obp}</div>
+                  <div>長打率: {careerStats.slg}</div>
+                  <div>OPS: {careerStats.ops}</div>
+                </div>
+              </div>
+              <div className="flex gap-2 mb-3">
+                <button
+                  onClick={() => resetPlayerGame(playerIndex)}
+                  className="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm"
+                >
+                  この試合をリセット
+                </button>
+
+                <button
+                  onClick={() => resetPlayerCareer(playerIndex)}
+                  className="bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
+                >
+                  通算リセット
+                </button>             
               </div>
 
-              <div className="grid grid-cols-2 gap-2 font-bold">
-                <div>打率: {careerStats.avg}</div>
-                <div>出塁率: {careerStats.obp}</div>
-                <div>長打率: {careerStats.slg}</div>
-                <div>OPS: {careerStats.ops}</div>
-              </div>
-            </div>
+<div className="flex gap-2 mb-3">
+  <button
+    onClick={() => resetPlayerGame(playerIndex)}
+    className="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm"
+  >
+    この試合をリセット
+  </button>
+
+  <button
+    onClick={() => resetPlayerCareer(playerIndex)}
+    className="bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
+  >
+    通算リセット
+  </button>
+</div>
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {resultOptions.map((result) => (
