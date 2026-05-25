@@ -250,6 +250,18 @@ const togglePlayerHistory = (playerIndex: number) => {
     </div>
 
 <div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
+
+  <div className="mb-3">
+    <div className="text-sm text-gray-500">
+      {gameDate}
+    </div>
+
+    <div className="text-xl font-bold">
+      {gameTitle || "対戦名未入力"}
+    </div>
+  </div>
+
+  <div className="flex items-center justify-between mb-2">
   <div className="flex items-center justify-between mb-2">
     <h2 className="font-bold text-lg">
       試合成績一覧
@@ -294,6 +306,7 @@ const togglePlayerHistory = (playerIndex: number) => {
           <td>{index + 1}</td>
 
           <td className="font-bold">
+            {index === 0 ? "🥇 " : ""}
             {player.name}
           </td>
 
