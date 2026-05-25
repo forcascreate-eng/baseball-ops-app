@@ -290,7 +290,7 @@ const togglePlayerHistory = (playerIndex: number) => {
 
           return (
             <div key={playerIndex} className="border rounded-xl p-4 shadow">
-              <div className="flex gap-2 mb-2">
+              <div className="flex flex-wrap gap-2 mb-2 items-center">
                 <button
                   onClick={() => movePlayer(playerIndex, "up")}
                   className="bg-gray-500 text-white px-2 py-1 rounded"
@@ -308,7 +308,7 @@ const togglePlayerHistory = (playerIndex: number) => {
                 <input
                    value={player.name}
                    onChange={(e) => changeName(playerIndex, e.target.value)}
-                   className="border px-2 py-1 rounded font-bold"
+                   className="border px-3 py-2 rounded font-bold flex-1 min-w-[140px]"
                 />
 
                 <input
@@ -319,7 +319,7 @@ const togglePlayerHistory = (playerIndex: number) => {
                     setPlayers(updated);
                   }}
                   placeholder="例：遊"
-                  className="border px-3 py-2 rounded text-sm w-28 text-center"
+                  className="border px-3 py-2 rounded text-sm w-24 text-center"
                 />
               </div>
 
