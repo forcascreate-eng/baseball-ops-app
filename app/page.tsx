@@ -308,7 +308,7 @@ const togglePlayerHistory = (playerIndex: number) => {
                 <input
                    value={player.name}
                    onChange={(e) => changeName(playerIndex, e.target.value)}
-                   className="border px-3 py-2 rounded font-bold flex-1 min-w-[140px]"
+                   className="border px-3 py-2 rounded font-bold flex-1 min-w-[180px]"
                 />
 
                 <input
