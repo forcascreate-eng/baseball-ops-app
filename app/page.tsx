@@ -57,6 +57,7 @@ export default function Home() {
   const [currentInning, setCurrentInning] = useState(1);
   const [loaded, setLoaded] = useState(false);
   const [gameTitle, setGameTitle] = useState("");
+  const [sortBy, setSortBy] = useState<"ops" | "avg" | "hits" | "homeRuns">("ops");
   const [gameDate, setGameDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -203,6 +204,12 @@ const togglePlayerHistory = (playerIndex: number) => {
 
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
+  const gameRanking = players
+  .map((player) => ({
+    player,
+    stats: getStats(player.results),
+  }))
+  .sort((a, b) => Number(b.stats[sortBy]) - Number(a.stats[sortBy]));
 
   return (
     <main className="p-4">
@@ -234,16 +241,88 @@ const togglePlayerHistory = (playerIndex: number) => {
       <div className="border rounded-xl p-4 mb-4 bg-gray-100 text-black">
         <h2 className="font-bold mb-2">チーム累計</h2>
         <div>
-          打数: {teamStats.atBats} / 安打: {teamStats.hits} / HR:{" "}
-          {teamStats.homeRuns} / 四球: {teamStats.walks}
+          打数: {teamStats.atBats}
         </div>
-        <div className="font-bold">
-          打率: {teamStats.avg} / 出塁率: {teamStats.obp} / 長打率:{" "}
-          {teamStats.slg} / OPS: {teamStats.ops}
-        </div>
-      </div>
 
-      <div className="mb-4">
+        <div className="font-bold">
+          OPS: {teamStats.ops}
+      </div>
+    </div>
+
+<div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
+  <div className="flex items-center justify-between mb-2">
+    <h2 className="font-bold text-lg">
+      試合成績一覧
+    </h2>
+
+    <select
+      value={sortBy}
+      onChange={(e) =>
+        setSortBy(
+          e.target.value as
+            | "ops"
+            | "avg"
+            | "hits"
+            | "homeRuns"
+        )
+      }
+      className="border rounded px-2 py-1 text-sm"
+    >
+      <option value="ops">OPS順</option>
+      <option value="avg">打率順</option>
+      <option value="hits">安打順</option>
+      <option value="homeRuns">HR順</option>
+    </select>
+  </div>
+
+  <table className="w-full text-sm">
+    <thead>
+      <tr className="border-b h-10">
+        <th className="text-left">順</th>
+        <th className="text-left">選手</th>
+        <th>守</th>
+        <th>打</th>
+        <th>安</th>
+        <th>HR</th>
+        <th>OPS</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {gameRanking.map(({ player, stats }, index) => (
+        <tr key={index} className="border-b">
+          <td>{index + 1}</td>
+
+          <td className="font-bold">
+            {player.name}
+          </td>
+
+          <td className="text-center">
+            {player.position || "-"}
+          </td>
+
+          <td className="text-center">
+            {stats.atBats}
+          </td>
+
+          <td className="text-center">
+            {stats.hits}
+          </td>
+
+          <td className="text-center">
+            {stats.homeRuns}
+          </td>
+
+          <td className="text-center font-bold text-blue-600">
+            {stats.ops}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+          
+        <div className="mb-4">
         <label className="font-bold mr-2">現在のイニング</label>
         <select
           value={currentInning}
