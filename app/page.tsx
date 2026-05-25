@@ -169,6 +169,14 @@ const resetPlayerCareer = (playerIndex: number) => {
   }
 };
 
+const togglePlayerHistory = (playerIndex: number) => {
+  if (openPlayers.includes(playerIndex)) {
+    setOpenPlayers(openPlayers.filter((i) => i !== playerIndex));
+  } else {
+    setOpenPlayers([...openPlayers, playerIndex]);
+  }
+};
+
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
 
@@ -314,8 +322,18 @@ const resetPlayerCareer = (playerIndex: number) => {
                 ))}
               </div>
 
+              <button
+                onClick={() => togglePlayerHistory(playerIndex)}
+                className="bg-gray-700 text-white px-3 py-2 rounded-lg mb-3 text-sm"
+              >
+                {openPlayers.includes(playerIndex)
+                  ? "▼ 打席履歴を閉じる"
+                  : "▶ 打席履歴を表示"}
+              </button>
+
               <div className="space-y-2">
-                {player.results.map((pa, resultIndex) => (
+                {openPlayers.includes(playerIndex) &&
+　　　　　　　　　　player.results.map((pa, resultIndex) => (
                   <div
                     key={resultIndex}
                     className="flex items-center gap-2 text-sm"
