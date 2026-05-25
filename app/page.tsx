@@ -302,22 +302,6 @@ const resetPlayerCareer = (playerIndex: number) => {
                 </button>             
               </div>
 
-<div className="flex gap-2 mb-3">
-  <button
-    onClick={() => resetPlayerGame(playerIndex)}
-    className="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm"
-  >
-    この試合をリセット
-  </button>
-
-  <button
-    onClick={() => resetPlayerCareer(playerIndex)}
-    className="bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
-  >
-    通算リセット
-  </button>
-</div>
-
               <div className="flex flex-wrap gap-2 mb-4">
                 {resultOptions.map((result) => (
                   <button
