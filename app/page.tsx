@@ -9,6 +9,7 @@ type Result =
 type PlateAppearance = {
   inning: number;
   result: Result;
+  rbi?: number;
 };
 
 type Player = {
@@ -53,13 +54,13 @@ const normalizePlayers = (data: any[]): Player[] => {
     results: (p.results ?? []).map((r: any) =>
       typeof r === "string"
         ? { inning: 1, result: r }
-        : { inning: r.inning ?? 1, result: r.result }
+        : { inning: r.inning ?? 1, result: r.result, rbi: r.rbi ?? 0 }
     ),
     career: {
       results: (p.career?.results ?? []).map((r: any) =>
         typeof r === "string"
           ? { inning: 1, result: r }
-          : { inning: r.inning ?? 1, result: r.result }
+          : { inning: r.inning ?? 1, result: r.result, rbi: r.rbi ?? 0 }
       ),
     },
   }));
@@ -115,10 +116,12 @@ export default function Home() {
   }, [players, loaded]);
 
   const getStats = (results: PlateAppearance[]) => {
-    let hits = 0, homeRuns = 0, walks = 0, hbp = 0;
+    let hits = 0, homeRuns = 0, walks = 0, hbp = 0, rbis = 0;
     let atBats = 0, sacFlies = 0, totalBases = 0;
 
-    results.forEach(({ result }) => {
+    results.forEach((pa) => {
+      const result = pa.result;
+      rbis += pa.rbi ?? 0;
       if (result === "単打") { hits++; atBats++; totalBases += 1; }
       if (result === "二塁打") { hits++; atBats++; totalBases += 2; }
       if (result === "三塁打") { hits++; atBats++; totalBases += 3; }
@@ -135,6 +138,7 @@ export default function Home() {
     const ops = obp + slg;
 
     return {
+      rbis,
       atBats,
       hits,
       homeRuns,
@@ -151,6 +155,7 @@ export default function Home() {
     updated[playerIndex].results.push({
       inning: currentInning,
       result,
+      rbi: 0,
     });
     setPlayers(updated);
   };
@@ -528,7 +533,7 @@ const restoreGameHistory = (index: number) => {
         </div>
 
         <div className="text-sm mb-2">
-          打数: {stats.atBats} / 安打: {stats.hits} / HR: {stats.homeRuns}
+          打数: {stats.atBats} / 安打: {stats.hits} / HR: {stats.homeRuns} / 打点: {stats.rbis}
         </div>
 
         <div className="font-bold mb-3">
@@ -616,6 +621,19 @@ const restoreGameHistory = (index: number) => {
                   ))}
                 </select>
 
+                <input
+                  type="number"
+                  min="0"
+                  value={pa.rbi ?? 0}
+                  onChange={(e) => {
+                    const updated = [...players];
+                    updated[playerIndex].results[resultIndex].rbi = Number(e.target.value);
+                    setPlayers(updated);
+                  }}
+                  className="border rounded px-2 py-1 w-16 bg-white text-black"
+                />
+                <span>打点</span>
+
                 <button
                   onClick={() =>
                     deleteResult(playerIndex, resultIndex)
@@ -639,6 +657,7 @@ const restoreGameHistory = (index: number) => {
             <div>安打: {careerStats.hits}</div>
             <div>HR: {careerStats.homeRuns}</div>
             <div>四球: {careerStats.walks}</div>
+            <div>打点: {careerStats.rbis}</div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 font-bold">
