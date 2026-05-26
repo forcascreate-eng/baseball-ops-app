@@ -387,3 +387,58 @@ const restoreGameHistory = (index: number) => {
     </tbody>
   </table>
 </div>
+
+      <div className="mb-4">
+        <label className="font-bold mr-2">現在のイニング</label>
+
+        <select
+          value={currentInning}
+          onChange={(e) => setCurrentInning(Number(e.target.value))}
+          className="border rounded px-3 py-2"
+        >
+          {Array.from({ length: 9 }, (_, i) => (
+            <option key={i + 1} value={i + 1}>
+              {i + 1}回
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={() => {
+          if (
+            confirm(
+              "新しい試合を開始しますか？現在の試合記録は通算に追加されます。"
+            )
+          ) {
+            setGameHistory((prev) => [
+              {
+                date: gameDate,
+                title: gameTitle,
+                players,
+              },
+              ...prev,
+            ]);
+
+            setPlayers((prev) =>
+              prev.map((player) => ({
+                ...player,
+                career: {
+                  results: [
+                    ...(player.career?.results ?? []),
+                    ...player.results,
+                  ],
+                },
+                results: [],
+              }))
+            );
+          }
+        }}
+        className="bg-red-600 text-white px-4 py-2 rounded-lg mb-4"
+      >
+        新しい試合
+      </button>
+
+    </main>
+  );
+}
