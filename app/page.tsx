@@ -269,7 +269,8 @@ const deleteGameHistory = (index: number) => {
           OPS: {teamStats.ops}
       </div>
     </div>
-      {/* 過去試合一覧 */}
+    
+{/* 過去試合一覧 */}
 <div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
   <h2 className="font-bold text-lg mb-2">過去試合一覧</h2>
 
