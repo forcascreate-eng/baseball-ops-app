@@ -450,13 +450,6 @@ const restoreGameHistory = (index: number) => {
       >
         新しい試合
       </button>
-      <div className="space-y-4">
-  {players.map((player, playerIndex) => {
-    const stats = getStats(player.results);
-    const careerStats = getStats([
-      ...(player.career?.results ?? []),
-      ...player.results,
-    ]);
       
       <button
         onClick={addPlayer}
@@ -464,7 +457,15 @@ const restoreGameHistory = (index: number) => {
       >
         選手を追加
       </button>
-      
+
+      <div className="space-y-4">
+  {players.map((player, playerIndex) => {
+    const stats = getStats(player.results);
+    const careerStats = getStats([
+      ...(player.career?.results ?? []),
+      ...player.results,
+    ]);
+               
     return (
       <div
         key={playerIndex}
