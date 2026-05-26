@@ -478,7 +478,7 @@ const restoreGameHistory = (index: number) => {
         key={playerIndex}
         className="border rounded-xl p-4 shadow"
       >
-        <div className="flex gap-2 mb-2">
+        <div className="flex flex-wrap gap-2 mb-2">
           <button
             onClick={() => movePlayer(playerIndex, "up")}
             className="bg-gray-500 text-white px-3 py-2 rounded"
@@ -501,13 +501,13 @@ const restoreGameHistory = (index: number) => {
               setPlayers(updated);
             }}
             placeholder="背番号"
-            className="border px-2 py-1 rounded w-20 bg-white text-black"
+            className="border px-2 py-1 rounded w-16 bg-white text-black"
          />
 
          <input
            value={player.name}
            onChange={(e) => changeName(playerIndex, e.target.value)}
-           className="border px-2 py-1 rounded flex-1 bg-white text-black"
+           className="border px-2 py-1 rounded flex-1 min-w-[140px] bg-white text-black"
          />
 
          <select
@@ -517,7 +517,7 @@ const restoreGameHistory = (index: number) => {
              updated[playerIndex].position = e.target.value;
              setPlayers(updated);
            }}
-           className="border px-2 py-1 rounded w-24 bg-white text-black"
+           className="border px-2 py-1 rounded w-20 bg-white text-black"
          >
            {positionOptions.map((pos) => (
              <option key={pos} value={pos}>
