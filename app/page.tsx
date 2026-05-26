@@ -262,7 +262,6 @@ const togglePlayerHistory = (playerIndex: number) => {
   </div>
 
   <div className="flex items-center justify-between mb-2">
-  <div className="flex items-center justify-between mb-2">
     <h2 className="font-bold text-lg">
       試合成績一覧
     </h2>
