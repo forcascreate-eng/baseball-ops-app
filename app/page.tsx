@@ -368,6 +368,16 @@ const togglePlayerHistory = (playerIndex: number) => {
       <button
         onClick={() => {
           if (confirm("新しい試合を開始しますか？現在の試合記録は通算に追加されます。")) {
+            
+            setGameHistory((prev) => [
+              {
+                date: gameDate,
+                title: gameTitle,
+                players: players,
+              },
+              ...prev,
+            ]);
+            
             setPlayers((prev) =>
               prev.map((player) => ({
                 ...player,
