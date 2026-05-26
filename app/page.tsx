@@ -310,7 +310,7 @@ const restoreGameHistory = (index: number) => {
              className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
            >
              開く
-             </button>
+           </button>
 
            <button
              onClick={() => deleteGameHistory(index)}
@@ -318,6 +318,7 @@ const restoreGameHistory = (index: number) => {
            >
              削除
            </button>
+        </div>
         </div>
       ))}
     </div>
