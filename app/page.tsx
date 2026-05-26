@@ -36,6 +36,7 @@ const initialPlayers = (): Player[] =>
 const normalizePlayers = (data: any[]): Player[] => {
   return data.map((p, i) => ({
     name: p.name ?? `選手${i + 1}`,
+    position: p.position ?? "",
     results: (p.results ?? []).map((r: any) =>
       typeof r === "string"
         ? { inning: 1, result: r }
