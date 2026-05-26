@@ -631,6 +631,14 @@ const restoreGameHistory = (index: number) => {
     );
   })}
 </div>
+
+<button
+  onClick={addPlayer}
+  className="bg-green-600 text-white px-4 py-2 rounded-lg mb-4 ml-2"
+>
+  選手を追加
+</button>
+
     </main>
   );
 }
