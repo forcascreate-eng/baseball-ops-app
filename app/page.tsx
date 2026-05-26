@@ -223,6 +223,16 @@ const deleteGameHistory = (index: number) => {
   }
 };
 
+const restoreGameHistory = (index: number) => {
+  const game = gameHistory[index];
+
+  if (confirm("この過去試合を開きますか？現在の試合内容は上書きされます。")) {
+    setGameDate(game.date);
+    setGameTitle(game.title);
+    setPlayers(game.players);
+  }
+};
+
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
   const gameRanking = players
@@ -269,7 +279,7 @@ const deleteGameHistory = (index: number) => {
           OPS: {teamStats.ops}
       </div>
     </div>
-    
+
 {/* 過去試合一覧 */}
 <div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
   <h2 className="font-bold text-lg mb-2">過去試合一覧</h2>
@@ -294,12 +304,20 @@ const deleteGameHistory = (index: number) => {
             </div>
           </div>
 
-          <button
-            onClick={() => deleteGameHistory(index)}
-            className="bg-red-500 text-white px-3 py-1 rounded text-sm"
-          >
-            削除
-          </button>
+        <div className="flex flex-col gap-2">
+           <button
+             onClick={() => restoreGameHistory(index)}
+             className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+           >
+             開く
+             </button>
+
+           <button
+             onClick={() => deleteGameHistory(index)}
+             className="bg-red-500 text-white px-3 py-1 rounded text-sm"
+           >
+             削除
+           </button>
         </div>
       ))}
     </div>
