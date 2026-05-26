@@ -438,7 +438,164 @@ const restoreGameHistory = (index: number) => {
       >
         新しい試合
       </button>
+      <div className="space-y-4">
+  {players.map((player, playerIndex) => {
+    const stats = getStats(player.results);
+    const careerStats = getStats([
+      ...(player.career?.results ?? []),
+      ...player.results,
+    ]);
 
+    return (
+      <div
+        key={playerIndex}
+        className="border rounded-xl p-4 shadow"
+      >
+        <div className="flex gap-2 mb-2">
+          <button
+            onClick={() => movePlayer(playerIndex, "up")}
+            className="bg-gray-500 text-white px-3 py-2 rounded"
+          >
+            ↑
+          </button>
+
+          <button
+            onClick={() => movePlayer(playerIndex, "down")}
+            className="bg-gray-500 text-white px-3 py-2 rounded"
+          >
+            ↓
+          </button>
+
+          <input
+            value={player.name}
+            onChange={(e) =>
+              changeName(playerIndex, e.target.value)
+            }
+            className="border px-2 py-1 rounded flex-1 text-black"
+          />
+
+          <input
+            value={player.position || ""}
+            onChange={(e) => {
+              const updated = [...players];
+              updated[playerIndex].position = e.target.value;
+              setPlayers(updated);
+            }}
+            placeholder="例：遊"
+            className="border px-2 py-1 rounded w-20 text-black"
+          />
+        </div>
+
+        <div className="text-sm mb-2">
+          打数: {stats.atBats} / 安打: {stats.hits} / HR: {stats.homeRuns}
+        </div>
+
+        <div className="font-bold mb-3">
+          打率: {stats.avg} / OPS: {stats.ops}
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-3">
+          {resultOptions.map((result) => (
+            <button
+              key={result}
+              onClick={() => addResult(playerIndex, result)}
+              className="bg-blue-500 text-white px-3 py-2 rounded-lg"
+            >
+              {result}
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => togglePlayerHistory(playerIndex)}
+          className="bg-gray-700 text-white px-3 py-2 rounded-lg mb-3 text-sm"
+        >
+          {openPlayers.includes(playerIndex)
+            ? "▼ 打席履歴を閉じる"
+            : "▶ 打席履歴を表示"}
+        </button>
+
+        {openPlayers.includes(playerIndex) && (
+          <div className="space-y-2">
+            {player.results.map((pa, resultIndex) => (
+              <div
+                key={resultIndex}
+                className="flex items-center gap-2 text-sm"
+              >
+                <span>{resultIndex + 1}打席目</span>
+
+                <select
+                  value={pa.inning}
+                  onChange={(e) =>
+                    editInning(
+                      playerIndex,
+                      resultIndex,
+                      Number(e.target.value)
+                    )
+                  }
+                  className="border rounded px-2 py-1"
+                >
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1}回
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  value={pa.result}
+                  onChange={(e) =>
+                    editResult(
+                      playerIndex,
+                      resultIndex,
+                      e.target.value as Result
+                    )
+                  }
+                  className="border rounded px-2 py-1"
+                >
+                  {resultOptions.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  onClick={() =>
+                    deleteResult(playerIndex, resultIndex)
+                  }
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                >
+                  削除
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="border rounded-lg p-3 mt-4 bg-yellow-100 text-black">
+          <div className="font-bold text-lg mb-2">
+            個人通算
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 text-sm mb-2">
+            <div>打数: {careerStats.atBats}</div>
+            <div>安打: {careerStats.hits}</div>
+            <div>HR: {careerStats.homeRuns}</div>
+            <div>四球: {careerStats.walks}</div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 font-bold">
+            <div>打率: {careerStats.avg}</div>
+            <div>出塁率: {careerStats.obp}</div>
+            <div>長打率: {careerStats.slg}</div>
+            <div>OPS: {careerStats.ops}</div>
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
     </main>
   );
 }
