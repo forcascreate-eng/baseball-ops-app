@@ -305,8 +305,11 @@ const togglePlayerHistory = (playerIndex: number) => {
           <td>{index + 1}</td>
 
           <td className="font-bold">
-            {index === 0 ? "🥇 " : ""}
             {player.name}
+
+            {index === 0 && " 🥇"}
+            {index === 1 && " 🥈"}
+            {index === 2 && " 🥉"}
           </td>
 
           <td className="text-center">
