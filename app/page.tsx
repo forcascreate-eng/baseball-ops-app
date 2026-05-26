@@ -229,7 +229,8 @@ const restoreGameHistory = (index: number) => {
   if (confirm("この過去試合を開きますか？現在の試合内容は上書きされます。")) {
     setGameDate(game.date);
     setGameTitle(game.title);
-    setPlayers(game.players);
+    setPlayers(normalizePlayers(game.players));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 };
 
