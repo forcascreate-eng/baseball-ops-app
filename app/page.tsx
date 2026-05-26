@@ -279,6 +279,28 @@ const togglePlayerHistory = (playerIndex: number) => {
       試合成績一覧
     </h2>
 
+  <div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
+    <h2 className="font-bold text-lg mb-2">過去試合一覧</h2>
+
+    {gameHistory.length === 0 ? (
+      <div className="text-sm text-gray-500">
+        まだ保存された試合はありません
+      </div>
+    ) : (
+      <div className="space-y-2">
+        {gameHistory.map((game, index) => (
+          <div key={index} className="border rounded-lg p-2">
+            <div className="font-bold">
+              {game.date}　{game.title || "対戦名未入力"}
+            </div>
+            <div className="text-sm text-gray-600">
+            登録選手: {game.players.length}人
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
     <select
       value={sortBy}
       onChange={(e) =>
@@ -377,7 +399,7 @@ const togglePlayerHistory = (playerIndex: number) => {
               },
               ...prev,
             ]);
-            
+
             setPlayers((prev) =>
               prev.map((player) => ({
                 ...player,
