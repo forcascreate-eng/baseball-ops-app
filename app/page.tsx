@@ -20,6 +20,12 @@ type Player = {
   };
 };
 
+type GameRecord = {
+  date: string;
+  title: string;
+  players: Player[];
+};
+
 const resultOptions: Result[] = [
   "単打", "二塁打", "三塁打", "HR", "四球",
   "死球", "三振", "ゴロ", "フライ", "犠飛",
@@ -58,6 +64,7 @@ export default function Home() {
   const [currentInning, setCurrentInning] = useState(1);
   const [loaded, setLoaded] = useState(false);
   const [gameTitle, setGameTitle] = useState("");
+  const [gameHistory, setGameHistory] = useState<GameRecord[]>([]);
   const [sortBy, setSortBy] = useState<"ops" | "avg" | "hits" | "homeRuns">("ops");
   const [gameDate, setGameDate] = useState(
     new Date().toISOString().split("T")[0]
@@ -67,6 +74,7 @@ export default function Home() {
   const saved = localStorage.getItem("players");
   const savedGameTitle = localStorage.getItem("gameTitle");
   const savedGameDate = localStorage.getItem("gameDate");
+  const savedGameHistory = localStorage.getItem("gameHistory");
 
   if (saved) {
     setPlayers(normalizePlayers(JSON.parse(saved)));
@@ -78,6 +86,9 @@ export default function Home() {
   if (savedGameDate) {
   setGameDate(savedGameDate);
   }
+  if (savedGameHistory) {
+  setGameHistory(JSON.parse(savedGameHistory));
+}
 
   setLoaded(true);
 }, []);
@@ -86,8 +97,9 @@ export default function Home() {
   if (loaded) {
     localStorage.setItem("gameTitle", gameTitle);
     localStorage.setItem("gameDate", gameDate);
+    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
   }
-}, [gameTitle, gameDate, loaded]);
+}, [gameTitle, gameDate, gameHistory, loaded]);
 
   useEffect(() => {
     if (loaded) {
