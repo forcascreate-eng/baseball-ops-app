@@ -13,6 +13,7 @@ type PlateAppearance = {
 
 type Player = {
   name: string;
+  number?: string;
   position?: string;
   results: PlateAppearance[];
   career: {
@@ -31,9 +32,14 @@ const resultOptions: Result[] = [
   "死球", "三振", "ゴロ", "フライ", "犠飛",
 ];
 
+const positionOptions = [
+  "", "投", "捕", "一", "二", "三", "遊", "左", "中", "右", "DH", "代打", "代走"
+];
+
 const initialPlayers = (): Player[] =>
   Array.from({ length: 12 }, (_, i) => ({
     name: `選手${i + 1}`,
+    number: "",
     results: [],
     career: { results: [] },
     position: "",
@@ -42,6 +48,7 @@ const initialPlayers = (): Player[] =>
 const normalizePlayers = (data: any[]): Player[] => {
   return data.map((p, i) => ({
     name: p.name ?? `選手${i + 1}`,
+    number: p.number ?? "",
     position: p.position ?? "",
     results: (p.results ?? []).map((r: any) =>
       typeof r === "string"
@@ -487,23 +494,37 @@ const restoreGameHistory = (index: number) => {
           </button>
 
           <input
-            value={player.name}
-            onChange={(e) =>
-              changeName(playerIndex, e.target.value)
-            }
-            className="border px-2 py-1 rounded flex-1 bg-white text-black"
-          />
-
-          <input
-            value={player.position || ""}
+            value={player.number || ""}
             onChange={(e) => {
               const updated = [...players];
-              updated[playerIndex].position = e.target.value;
+              updated[playerIndex].number = e.target.value;
               setPlayers(updated);
             }}
-            placeholder="例：遊"
+            placeholder="背番号"
             className="border px-2 py-1 rounded w-20 bg-white text-black"
-          />
+         />
+
+         <input
+           value={player.name}
+           onChange={(e) => changeName(playerIndex, e.target.value)}
+           className="border px-2 py-1 rounded flex-1 bg-white text-black"
+         />
+
+         <select
+           value={player.position || ""}
+           onChange={(e) => {
+             const updated = [...players];
+             updated[playerIndex].position = e.target.value;
+             setPlayers(updated);
+           }}
+           className="border px-2 py-1 rounded w-24 bg-white text-black"
+         >
+           {positionOptions.map((pos) => (
+             <option key={pos} value={pos}>
+               {pos || "守備"}
+         </option>
+           ))}
+         </select>
         </div>
 
         <div className="text-sm mb-2">
