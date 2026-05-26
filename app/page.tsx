@@ -191,6 +191,17 @@ export default function Home() {
     setPlayers(updated);
   };
 
+  const addPlayer = () => {
+  setPlayers((prev) => [
+    ...prev,
+    {
+      name: "",
+      position: "",
+      results: [],
+      career: { results: [] },
+    },
+  ]);
+};
   const resetPlayerGame = (playerIndex: number) => {
   if (confirm("この選手の今回の試合記録を削除しますか？")) {
     const updated = [...players];
@@ -237,6 +248,7 @@ const restoreGameHistory = (index: number) => {
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
   const gameRanking = players
+  .filter((player) => player.name.trim() !== "")
   .map((player) => ({
     player,
     stats: getStats(player.results),
@@ -445,7 +457,14 @@ const restoreGameHistory = (index: number) => {
       ...(player.career?.results ?? []),
       ...player.results,
     ]);
-
+      
+      <button
+        onClick={addPlayer}
+        className="bg-green-600 text-white px-4 py-2 rounded-lg mb-4 ml-2"
+      >
+        選手を追加
+      </button>
+      
     return (
       <div
         key={playerIndex}
