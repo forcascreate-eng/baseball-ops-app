@@ -215,6 +215,14 @@ const togglePlayerHistory = (playerIndex: number) => {
   }
 };
 
+const deleteGameHistory = (index: number) => {
+  if (confirm("この過去試合を削除しますか？")) {
+    setGameHistory((prev) =>
+      prev.filter((_, i) => i !== index)
+    );
+  }
+};
+
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
   const gameRanking = players
@@ -289,13 +297,22 @@ const togglePlayerHistory = (playerIndex: number) => {
     ) : (
       <div className="space-y-2">
         {gameHistory.map((game, index) => (
-          <div key={index} className="border rounded-lg p-2">
+          <div
+            key={index}
+            className="border rounded-lg p-2 flex items-center justify-between"
+          >
             <div className="font-bold">
               {game.date}　{game.title || "対戦名未入力"}
             </div>
             <div className="text-sm text-gray-600">
             登録選手: {game.players.length}人
           </div>
+          <button
+            onClick={() => deleteGameHistory(index)}
+            className="bg-red-500 text-white px-3 py-1 rounded text-sm"
+          >
+            削除
+          </button>
         </div>
       ))}
     </div>
