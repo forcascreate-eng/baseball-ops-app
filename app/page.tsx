@@ -295,7 +295,7 @@ const togglePlayerHistory = (playerIndex: number) => {
         <th>守</th>
         <th>打</th>
         <th>安</th>
-        <th>HR</th>
+        <th>率</th>
         <th>OPS</th>
       </tr>
     </thead>
@@ -323,7 +323,7 @@ const togglePlayerHistory = (playerIndex: number) => {
           </td>
 
           <td className="text-center">
-            {stats.homeRuns}
+            {stats.avg}
           </td>
 
           <td className="text-center font-bold text-blue-600">
