@@ -471,7 +471,7 @@ const restoreGameHistory = (index: number) => {
             onChange={(e) =>
               changeName(playerIndex, e.target.value)
             }
-            className="border px-2 py-1 rounded flex-1 text-black"
+            className="border px-2 py-1 rounded flex-1 bg-white text-black"
           />
 
           <input
@@ -482,7 +482,7 @@ const restoreGameHistory = (index: number) => {
               setPlayers(updated);
             }}
             placeholder="例：遊"
-            className="border px-2 py-1 rounded w-20 text-black"
+            className="border px-2 py-1 rounded w-20 bg-white text-black"
           />
         </div>
 
