@@ -30,7 +30,7 @@ type GameRecord = {
 
 const resultOptions: Result[] = [
   "単打", "二塁打", "三塁打", "HR", "四球",
-  "死球", "三振", "ゴロ", "フライ", "犠飛",
+  "死球", "三振", "ゴロ", "フライ", "犠飛","犠打",
 ];const outResults: Result[] = ["三振", "ゴロ", "フライ", "犠飛", "犠打"];
 
 const positionOptions = [
