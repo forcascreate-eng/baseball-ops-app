@@ -71,6 +71,7 @@ export default function Home() {
   const [openPlayers, setOpenPlayers] = useState<number[]>([]);
   const [currentInning, setCurrentInning] = useState(1);
   const [inningHalf, setInningHalf] = useState<"表" | "裏">("表");
+  const [myBattingSide, setMyBattingSide] = useState<"表" | "裏">("表");
   const [loaded, setLoaded] = useState(false);
   const [gameTitle, setGameTitle] = useState("");
   const [gameHistory, setGameHistory] = useState<GameRecord[]>([]);
@@ -351,6 +352,14 @@ const restoreGameHistory = (index: number) => {
   <h2 className="font-bold text-lg mb-2">
     スコアボード
   </h2>
+  <button
+  onClick={() =>
+    setMyBattingSide((prev) => (prev === "表" ? "裏" : "表"))
+  }
+  className="bg-blue-600 text-white px-3 py-2 rounded-lg mb-2 text-sm"
+  >
+    自チーム：{myBattingSide}
+</button>
 
   <table className="w-full text-sm text-center">
     <thead>
@@ -366,42 +375,67 @@ const restoreGameHistory = (index: number) => {
     </thead>
 
     <tbody>
-      <tr className="border-t">
-        <td className="font-bold">自</td>
+      {myBattingSide === "表" ? (
+  <>
+    <tr className="border-t">
+      <td className="font-bold">自</td>
+      {myScores.map((score, i) => (
+        <td key={i}>{score}</td>
+      ))}
+      <td className="font-bold">{myScores.reduce((a, b) => a + b, 0)}</td>
+    </tr>
 
-        {myScores.map((score, i) => (
-          <td key={i}>{score}</td>
-        ))}
-
-        <td className="font-bold">
-          {myScores.reduce((a, b) => a + b, 0)}
+    <tr className="border-t">
+      <td className="font-bold">相</td>
+      {opponentScores.map((score, i) => (
+        <td key={i}>
+          <input
+            type="number"
+            min="0"
+            value={score === 0 ? "" : score}
+            onChange={(e) => {
+              const updated = [...opponentScores];
+              updated[i] = Number(e.target.value);
+              setOpponentScores(updated);
+            }}
+            className="w-10 border rounded text-center bg-white text-black"
+          />
         </td>
-      </tr>
-
-      <tr className="border-t">
-        <td className="font-bold">相</td>
-
-        {opponentScores.map((score, i) => (
-          <td key={i}>
-            <input
-              type="number"
-              min="0"
-              value={score === 0 ? "" : score}
-              onChange={(e) => {
-                const updated = [...opponentScores];
-                updated[i] = Number(e.target.value);
-
-                setOpponentScores(updated);
-              }}
-              className="w-10 border rounded text-center bg-white text-black"
-            />
-          </td>
-        ))}
-
-        <td className="font-bold">
-          {opponentScores.reduce((a, b) => a + b, 0)}
+      ))}
+      <td className="font-bold">{opponentScores.reduce((a, b) => a + b, 0)}</td>
+    </tr>
+  </>
+) : (
+  <>
+    <tr className="border-t">
+      <td className="font-bold">相</td>
+      {opponentScores.map((score, i) => (
+        <td key={i}>
+          <input
+            type="number"
+            min="0"
+            value={score === 0 ? "" : score}
+            onChange={(e) => {
+              const updated = [...opponentScores];
+              updated[i] = Number(e.target.value);
+              setOpponentScores(updated);
+            }}
+            className="w-10 border rounded text-center bg-white text-black"
+          />
         </td>
-      </tr>
+      ))}
+      <td className="font-bold">{opponentScores.reduce((a, b) => a + b, 0)}</td>
+    </tr>
+
+    <tr className="border-t">
+      <td className="font-bold">自</td>
+      {myScores.map((score, i) => (
+        <td key={i}>{score}</td>
+      ))}
+      <td className="font-bold">{myScores.reduce((a, b) => a + b, 0)}</td>
+    </tr>
+  </>
+)}
     </tbody>
   </table>
 </div>
