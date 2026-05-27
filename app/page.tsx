@@ -298,6 +298,12 @@ const restoreGameHistory = (index: number) => {
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
   const myScores = Array.from({ length: 9 }, (_, i) =>
+  const myTotalScore = myScores.reduce((a, b) => a + b, 0);
+
+  const opponentTotalScore = opponentScores.reduce(
+    (a, b) => a + b,
+    0
+  );
   players
     .flatMap((player) => player.results)
     .filter((pa) => pa.inning === i + 1)
@@ -349,10 +355,20 @@ const restoreGameHistory = (index: number) => {
       </div>
     </div>
 
-<div className="bg-white text-black rounded-xl p-3 mb-4 shadow overflow-x-auto">
+<div className="sticky top-0 z-50 bg-white text-black rounded-xl p-3 mb-4 shadow overflow-x-auto">
   <h2 className="font-bold text-lg mb-2">
     スコアボード
   </h2>
+  <div className="mb-3">
+    <div className="text-sm text-gray-600">
+      現在：{currentInning}回{inningHalf}
+    </div>
+
+    <div className="text-2xl font-bold">
+      自 {myTotalScore} - {opponentTotalScore} 相
+    </div>
+    
+</div>
   <button
   onClick={() =>
     setMyBattingSide((prev) => (prev === "表" ? "裏" : "表"))
