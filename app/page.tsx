@@ -31,7 +31,7 @@ type GameRecord = {
 const resultOptions: Result[] = [
   "単打", "二塁打", "三塁打", "HR", "四球",
   "死球", "三振", "ゴロ", "フライ", "犠飛",
-];
+];const outResults: Result[] = ["三振", "ゴロ", "フライ", "犠飛"];
 
 const positionOptions = [
   "", "投", "捕", "一", "二", "三", "遊", "左", "中", "右", "DH", "代打", "代走"
@@ -152,12 +152,28 @@ export default function Home() {
 
   const addResult = (playerIndex: number, result: Result) => {
     const updated = [...players];
+
     updated[playerIndex].results.push({
       inning: currentInning,
       result,
       rbi: 0,
     });
+
     setPlayers(updated);
+
+    if (outResults.includes(result)) {
+      const inningResults = updated.flatMap((player) =>
+        player.results.filter((pa) => pa.inning === currentInning)
+      );
+
+      const outs = inningResults.filter((pa) =>
+        outResults.includes(pa.result)
+      ).length;
+
+      if (outs >= 3 && currentInning < 9) {
+        setCurrentInning(currentInning + 1);
+      }
+    }
   };
 
   const editResult = (
@@ -560,7 +576,9 @@ const restoreGameHistory = (index: number) => {
             <button
               key={result}
               onClick={() => addResult(playerIndex, result)}
-              className="bg-blue-500 text-white px-3 py-2 rounded-lg"
+              className={`${
+                outResults.includes(result) ? "bg-gray-600" : "bg-blue-500"
+              } text-white px-3 py-2 rounded-lg`}
             >
               {result}
             </button>
