@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 type Result =
   | "単打" | "二塁打" | "三塁打" | "HR"
-  | "四球" | "死球" | "三振" | "ゴロ" | "フライ" | "犠飛";
+  | "四球" | "死球" | "三振" | "ゴロ" | "フライ" | "犠飛" | "犠打";
 
 type PlateAppearance = {
   inning: number;
@@ -31,7 +31,7 @@ type GameRecord = {
 const resultOptions: Result[] = [
   "単打", "二塁打", "三塁打", "HR", "四球",
   "死球", "三振", "ゴロ", "フライ", "犠飛",
-];const outResults: Result[] = ["三振", "ゴロ", "フライ", "犠飛"];
+];const outResults: Result[] = ["三振", "ゴロ", "フライ", "犠飛", "犠打"];
 
 const positionOptions = [
   "", "投", "捕", "一", "二", "三", "遊", "左", "中", "右", "DH", "代打", "代走"
