@@ -77,12 +77,16 @@ export default function Home() {
   const [gameDate, setGameDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [opponentScores, setOpponentScores] = useState<number[]>(
+    Array(9).fill(0)
+  );
 
   useEffect(() => {
   const saved = localStorage.getItem("players");
   const savedGameTitle = localStorage.getItem("gameTitle");
   const savedGameDate = localStorage.getItem("gameDate");
   const savedGameHistory = localStorage.getItem("gameHistory");
+  const savedOpponentScores = localStorage.getItem("opponentScores");
 
   if (saved) {
     setPlayers(normalizePlayers(JSON.parse(saved)));
@@ -96,7 +100,10 @@ export default function Home() {
   }
   if (savedGameHistory) {
   setGameHistory(JSON.parse(savedGameHistory));
-}
+  }
+  if (savedOpponentScores) {
+  setOpponentScores(JSON.parse(savedOpponentScores));
+  }
 
   setLoaded(true);
 }, []);
@@ -106,8 +113,13 @@ export default function Home() {
     localStorage.setItem("gameTitle", gameTitle);
     localStorage.setItem("gameDate", gameDate);
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
+    localStorage.setItem(
+      "opponentScores",
+      JSON.stringify(opponentScores)
+    );
   }
-}, [gameTitle, gameDate, gameHistory, loaded]);
+
+}, [gameTitle, gameDate, gameHistory, opponentScores, loaded]);
 
   useEffect(() => {
     if (loaded) {
@@ -275,6 +287,12 @@ const restoreGameHistory = (index: number) => {
 
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
+  const myScores = Array.from({ length: 9 }, (_, i) =>
+  players
+    .flatMap((player) => player.results)
+    .filter((pa) => pa.inning === i + 1)
+    .reduce((sum, pa) => sum + (pa.rbi ?? 0), 0)
+);
   const gameRanking = players
   .filter((player) => player.name.trim() !== "")
   .map((player) => ({
@@ -320,6 +338,65 @@ const restoreGameHistory = (index: number) => {
           OPS: {teamStats.ops}
       </div>
     </div>
+    
+<div className="bg-white text-black rounded-xl p-3 mb-4 shadow overflow-x-auto">
+  <h2 className="font-bold text-lg mb-2">
+    スコアボード
+  </h2>
+
+  <table className="w-full text-sm text-center">
+    <thead>
+      <tr>
+        <th>回</th>
+
+        {Array.from({ length: 9 }, (_, i) => (
+          <th key={i}>{i + 1}</th>
+        ))}
+
+        <th>計</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr className="border-t">
+        <td className="font-bold">自</td>
+
+        {myScores.map((score, i) => (
+          <td key={i}>{score}</td>
+        ))}
+
+        <td className="font-bold">
+          {myScores.reduce((a, b) => a + b, 0)}
+        </td>
+      </tr>
+
+      <tr className="border-t">
+        <td className="font-bold">相</td>
+
+        {opponentScores.map((score, i) => (
+          <td key={i}>
+            <input
+              type="number"
+              min="0"
+              value={score}
+              onChange={(e) => {
+                const updated = [...opponentScores];
+                updated[i] = Number(e.target.value);
+
+                setOpponentScores(updated);
+              }}
+              className="w-10 border rounded text-center bg-white text-black"
+            />
+          </td>
+        ))}
+
+        <td className="font-bold">
+          {opponentScores.reduce((a, b) => a + b, 0)}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 {/* 過去試合一覧 */}
 <div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
