@@ -338,7 +338,7 @@ const restoreGameHistory = (index: number) => {
           OPS: {teamStats.ops}
       </div>
     </div>
-    
+
 <div className="bg-white text-black rounded-xl p-3 mb-4 shadow overflow-x-auto">
   <h2 className="font-bold text-lg mb-2">
     スコアボード
@@ -532,7 +532,7 @@ const restoreGameHistory = (index: number) => {
               {
                 date: gameDate,
                 title: gameTitle,
-                players,
+                players: JSON.parse(JSON.stringify(players)),
               },
               ...prev,
             ]);
