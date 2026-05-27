@@ -70,6 +70,7 @@ export default function Home() {
   const [players, setPlayers] = useState<Player[]>(initialPlayers());
   const [openPlayers, setOpenPlayers] = useState<number[]>([]);
   const [currentInning, setCurrentInning] = useState(1);
+  const [inningHalf, setInningHalf] = useState<"表" | "裏">("表");
   const [loaded, setLoaded] = useState(false);
   const [gameTitle, setGameTitle] = useState("");
   const [gameHistory, setGameHistory] = useState<GameRecord[]>([]);
@@ -182,10 +183,17 @@ export default function Home() {
         outResults.includes(pa.result)
       ).length;
 
-      if (outs >= 3 && currentInning < 9) {
-        setCurrentInning(currentInning + 1);
+      if (outs >= 3) {
+        if (inningHalf === "表") {
+          setInningHalf("裏");
+        } else {
+          if (currentInning < 9) {
+            setCurrentInning(currentInning + 1);
+          }
+
+          setInningHalf("表");
+        }
       }
-    }
   };
 
   const editResult = (
@@ -378,7 +386,7 @@ const restoreGameHistory = (index: number) => {
             <input
               type="number"
               min="0"
-              value={score}
+              value={score === 0 ? "" : score}
               onChange={(e) => {
                 const updated = [...opponentScores];
                 updated[i] = Number(e.target.value);
@@ -513,12 +521,23 @@ const restoreGameHistory = (index: number) => {
           onChange={(e) => setCurrentInning(Number(e.target.value))}
           className="border rounded px-3 py-2"
         >
+
           {Array.from({ length: 9 }, (_, i) => (
             <option key={i + 1} value={i + 1}>
               {i + 1}回
             </option>
           ))}
         </select>
+          <button
+            onClick={() =>
+              setInningHalf((prev) =>
+                prev === "表" ? "裏" : "表"
+              )
+            }
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg ml-2"
+        >
+           {inningHalf}
+          </button>
       </div>
 
       <button
