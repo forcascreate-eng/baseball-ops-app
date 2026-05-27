@@ -356,30 +356,27 @@ const restoreGameHistory = (index: number) => {
       </div>
     </div>
 
-<div className="sticky top-0 z-50 bg-white text-black rounded-xl p-3 mb-4 shadow overflow-x-auto">
-  <h2 className="font-bold text-lg mb-2">
-    スコアボード
-  </h2>
-  <div className="mb-3">
-    <div className="text-sm text-gray-600">
-      現在：{currentInning}回{inningHalf}
-    </div>
+<div className="sticky top-0 z-50 bg-white text-black rounded-xl px-3 py-2 mb-3 shadow overflow-x-auto">
+  <div className="flex items-center justify-between mb-1">
+  <div className="font-bold text-sm">
+    {currentInning}回{inningHalf}
+  </div>
 
-    <div className="text-2xl font-bold">
-      自 {myTotalScore} - {opponentTotalScore} 相
-    </div>
-    
-</div>
+  <div className="font-bold text-xl">
+    自 {myTotalScore} - {opponentTotalScore} 相
+  </div>
+
   <button
-  onClick={() =>
-    setMyBattingSide((prev) => (prev === "表" ? "裏" : "表"))
-  }
-  className="bg-blue-600 text-white px-3 py-2 rounded-lg mb-2 text-sm"
+    onClick={() =>
+      setMyBattingSide((prev) => (prev === "表" ? "裏" : "表"))
+    }
+    className="bg-blue-600 text-white px-2 py-1 rounded text-xs"
   >
-    自チーム：{myBattingSide}
-</button>
-
-  <table className="w-full text-sm text-center">
+    自:{myBattingSide}
+  </button>
+</div>
+  
+  <table className="w-full text-xs text-center">
     <thead>
       <tr>
         <th>回</th>
@@ -416,7 +413,7 @@ const restoreGameHistory = (index: number) => {
               updated[i] = Number(e.target.value);
               setOpponentScores(updated);
             }}
-            className="w-10 border rounded text-center bg-white text-black"
+            className="w-8 border rounded text-center bg-white text-black"
           />
         </td>
       ))}
