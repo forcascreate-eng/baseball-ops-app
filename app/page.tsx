@@ -298,7 +298,18 @@ const restoreGameHistory = (index: number) => {
   const teamResults = players.flatMap((p) => p.results);
   const teamStats = getStats(teamResults);
   const myScores = Array.from({ length: 9 }, (_, i) =>
+  players
+    .flatMap((player) => player.results)
+    .filter((pa) => pa.inning === i + 1)
+    .reduce((sum, pa) => sum + (pa.rbi ?? 0), 0)
+  );
+
   const myTotalScore = myScores.reduce((a, b) => a + b, 0);
+
+  const opponentTotalScore = opponentScores.reduce(
+    (a, b) => a + b,
+    0
+  );
 
   const opponentTotalScore = opponentScores.reduce(
     (a, b) => a + b,
@@ -847,3 +858,4 @@ const restoreGameHistory = (index: number) => {
     </main>
   );
 }
+
