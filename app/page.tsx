@@ -195,6 +195,7 @@ export default function Home() {
           setInningHalf("表");
         }
       }
+    }
   };
 
   const editResult = (
