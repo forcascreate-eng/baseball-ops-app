@@ -89,7 +89,8 @@ export default function Home() {
   const [opponentScores, setOpponentScores] = useState<number[]>(
     Array(9).fill(0)
   );
-
+  const [gameFinished, setGameFinished] = useState(false);
+  
   useEffect(() => {
   const saved = localStorage.getItem("players");
   const savedGameTitle = localStorage.getItem("gameTitle");
@@ -376,13 +377,22 @@ const restoreGameHistory = (index: number) => {
      </div>
 
       <div className="border rounded-xl p-4 mb-4 bg-gray-100 text-black">
-        <h2 className="font-bold mb-2">チーム累計</h2>
-        <div>
-          打数: {teamStats.atBats}
-        </div>
+        <h2 className="font-bold mb-2">チーム成績</h2>
 
-        <div className="font-bold">
-          OPS: {teamStats.ops}
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <div>打数: {teamStats.atBats}</div>
+          <div>安打: {teamStats.hits}</div>
+          <div>HR: {teamStats.homeRuns}</div>
+          <div>四球: {teamStats.walks}</div>
+          <div>打点: {teamStats.rbis}</div>
+          <div>得点: {myTotalScore}</div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 font-bold mt-2">
+        <div>打率: {teamStats.avg}</div>
+        <div>出塁率: {teamStats.obp}</div>
+        <div>長打率: {teamStats.slg}</div>
+        <div>OPS: {teamStats.ops}</div>
       </div>
     </div>
 
@@ -531,6 +541,32 @@ const restoreGameHistory = (index: number) => {
 </div>
 
 {/* 試合成績一覧 */}
+{gameFinished && (
+  <div className="bg-white text-black rounded-xl p-4 mb-4 shadow">
+    <h2 className="font-bold text-xl mb-2">
+      試合結果
+    </h2>
+
+    <div className="text-sm text-gray-500">
+      {gameDate}
+    </div>
+
+    <div className="font-bold text-lg mb-3">
+      {gameTitle || "対戦名未入力"}
+    </div>
+
+    <div className="text-3xl font-bold mb-3">
+      自 {myTotalScore} - {opponentTotalScore} 相
+    </div>
+
+    <button
+      onClick={() => setGameFinished(false)}
+      className="bg-gray-600 text-white px-3 py-2 rounded-lg"
+    >
+      閉じる
+    </button>
+  </div>
+)}
 <div className="bg-white text-black rounded-xl p-3 mb-4 shadow">
   <div className="mb-3">
     <div className="text-sm text-gray-500">{gameDate}</div>
@@ -619,40 +655,50 @@ const restoreGameHistory = (index: number) => {
           </button>
       </div>
 
-      <button
-        onClick={() => {
-          if (
-            confirm(
-              "新しい試合を開始しますか？現在の試合記録は通算に追加されます。"
-            )
-          ) {
-            setGameHistory((prev) => [
-              {
-                date: gameDate,
-                title: gameTitle,
-                players: JSON.parse(JSON.stringify(players)),
-              },
-              ...prev,
-            ]);
+      <div className="flex gap-2 mb-4">
 
-            setPlayers((prev) =>
-              prev.map((player) => ({
-                ...player,
-                career: {
-                  results: [
-                    ...(player.career?.results ?? []),
-                    ...player.results,
-                  ],
-                },
-                results: [],
-              }))
-            );
-          }
-        }}
-        className="bg-red-600 text-white px-4 py-2 rounded-lg mb-4"
+      <button
+        onClick={() => setGameFinished(true)}
+        className="bg-purple-600 text-white px-4 py-2 rounded-lg"
       >
-        新しい試合
+        試合終了
       </button>
+
+<button
+  onClick={() => {
+    if (
+      confirm(
+        "新しい試合を開始しますか？現在の試合記録は通算に追加されます。"
+      )
+    ) {
+      setGameHistory((prev) => [
+        {
+          date: gameDate,
+          title: gameTitle,
+          players: JSON.parse(JSON.stringify(players)),
+        },
+        ...prev,
+      ]);
+
+      setPlayers((prev) =>
+        prev.map((player) => ({
+          ...player,
+          career: {
+            results: [
+              ...(player.career?.results ?? []),
+              ...player.results,
+            ],
+          },
+          results: [],
+        }))
+      );
+    }
+  }}
+  className="bg-red-600 text-white px-4 py-2 rounded-lg mb-4 ml-2"
+  >
+    新しい試合
+  </button>
+  </div>
       
       <button
         onClick={addPlayer}
