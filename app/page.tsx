@@ -414,7 +414,9 @@ const restoreGameHistory = (index: number) => {
   </div>
 
   <div className="font-bold text-xl">
-    自 {myTotalScore} - {opponentTotalScore} 相
+    {myTeamName || "自チーム"} {myTotalScore}
+     -
+    {opponentTotalScore} {gameTitle || "相手チーム"}
   </div>
 
   <button
