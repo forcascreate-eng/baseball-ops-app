@@ -558,6 +558,16 @@ const restoreGameHistory = (index: number) => {
     <div className="text-3xl font-bold mb-3">
       自 {myTotalScore} - {opponentTotalScore} 相
     </div>
+    <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
+      <div>チーム打率: {teamStats.avg}</div>
+      <div>チームOPS: {teamStats.ops}</div>
+
+      <div>総安打: {teamStats.hits}</div>
+      <div>総HR: {teamStats.homeRuns}</div>
+
+      <div>総打点: {teamStats.rbis}</div>
+      <div>総四球: {teamStats.walks}</div>
+    </div>
 
     <button
       onClick={() => setGameFinished(false)}
