@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 type Result =
   | "単打" | "二塁打" | "三塁打" | "HR"
-  | "四球" | "死球" | "三振" | "ゴロ" | "フライ" | "犠飛" | "犠打";
+  | "四球" | "死球" | "三振" | "ゴロ" | "フライ" | "犠飛" | "犠打" | "失策出塁" | "併殺打";
 
 type PlateAppearance = {
   inning: number;
@@ -30,8 +30,15 @@ type GameRecord = {
 
 const resultOptions: Result[] = [
   "単打", "二塁打", "三塁打", "HR", "四球",
-  "死球", "三振", "ゴロ", "フライ", "犠飛","犠打",
-];const outResults: Result[] = ["三振", "ゴロ", "フライ", "犠飛", "犠打"];
+  "死球", "三振", "ゴロ", "フライ", "犠飛","犠打","併殺打"
+];const outResults = [
+  "三振",
+  "ゴロ",
+  "フライ",
+  "犠飛",
+  "犠打",
+  "併殺打"
+];
 
 const positionOptions = [
   "", "投", "捕", "一", "二", "三", "遊", "左", "中", "右", "DH", "代打", "代走"
@@ -142,7 +149,14 @@ export default function Home() {
       if (result === "HR") { hits++; homeRuns++; atBats++; totalBases += 4; }
       if (result === "四球") walks++;
       if (result === "死球") hbp++;
-      if (result === "三振" || result === "ゴロ" || result === "フライ") atBats++;
+      if (
+        result === "三振" ||
+        result === "ゴロ" ||
+        result === "フライ" ||
+        result === "失策出塁" ||
+        result === "併殺打" 
+      )
+        atBats++;
       if (result === "犠飛") sacFlies++;
     });
 
@@ -180,9 +194,16 @@ export default function Home() {
         player.results.filter((pa) => pa.inning === currentInning)
       );
 
-      const outs = inningResults.filter((pa) =>
-        outResults.includes(pa.result)
-      ).length;
+      const outs = inningResults.reduce(
+        (sum, pa) =>
+          sum +
+          (pa.result === "併殺打"
+            ? 2
+            : outResults.includes(pa.result)
+            ? 1
+            : 0),
+        0
+      );
 
       if (outs >= 3) {
         if (inningHalf === "表") {
