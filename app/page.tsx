@@ -95,6 +95,7 @@ export default function Home() {
   useEffect(() => {
   const saved = localStorage.getItem("players");
   const savedGameTitle = localStorage.getItem("gameTitle");
+  const savedMyTeamName = localStorage.getItem("myTeamName");
   const savedGameDate = localStorage.getItem("gameDate");
   const savedGameHistory = localStorage.getItem("gameHistory");
   const savedOpponentScores = localStorage.getItem("opponentScores");
@@ -106,14 +107,17 @@ export default function Home() {
   if (savedGameTitle) {
     setGameTitle(savedGameTitle);
   }
+  if (savedMyTeamName) {
+    setMyTeamName(savedMyTeamName);
+  }
   if (savedGameDate) {
-  setGameDate(savedGameDate);
+    setGameDate(savedGameDate);
   }
   if (savedGameHistory) {
-  setGameHistory(JSON.parse(savedGameHistory));
+    setGameHistory(JSON.parse(savedGameHistory));
   }
   if (savedOpponentScores) {
-  setOpponentScores(JSON.parse(savedOpponentScores));
+    setOpponentScores(JSON.parse(savedOpponentScores));
   }
 
   setLoaded(true);
@@ -122,6 +126,7 @@ export default function Home() {
   useEffect(() => {
   if (loaded) {
     localStorage.setItem("gameTitle", gameTitle);
+    localStorage.setItem("myTeamName", myTeamName);
     localStorage.setItem("gameDate", gameDate);
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
     localStorage.setItem(
@@ -130,7 +135,7 @@ export default function Home() {
     );
   }
 
-}, [gameTitle, gameDate, gameHistory, opponentScores, loaded]);
+}, [gameTitle, myTeamName, gameDate, gameHistory, opponentScores, loaded]);
 
   useEffect(() => {
     if (loaded) {
@@ -417,7 +422,7 @@ const restoreGameHistory = (index: number) => {
     {myTeamName || "自チーム"}
   </div>
 
-  <div className="text-4xl font-bold">
+  <div className="text-3xl font-bold">
     {myTotalScore} - {opponentTotalScore}
   </div>
 
