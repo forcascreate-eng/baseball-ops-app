@@ -575,16 +575,16 @@ const restoreGameHistory = (index: number) => {
       {gameDate}
     </div>
 
-    <div className="font-bold text-lg mb-3">
-      {gameTitle || "対戦名未入力"}
-    </div>
-
     <div className="text-2xl font-bold mb-3">
       {myTeamName}
     </div>
 
     <div className="text-4xl font-bold mb-3">
      {myTotalScore} - {opponentTotalScore}
+    </div>
+
+    <div className="text-2xl font-bold mb-3">
+      {gameTitle}
     </div>
 
     <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
