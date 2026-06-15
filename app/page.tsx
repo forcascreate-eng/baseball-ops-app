@@ -413,10 +413,16 @@ const restoreGameHistory = (index: number) => {
     {currentInning}回{inningHalf}
   </div>
 
-  <div className="font-bold text-xl">
-    {myTeamName || "自チーム"} {myTotalScore}
-     -
-    {opponentTotalScore} {gameTitle || "相手チーム"}
+  <div className="text-lg font-bold">
+    {myTeamName || "自チーム"}
+  </div>
+
+  <div className="text-4xl font-bold">
+    {myTotalScore} - {opponentTotalScore}
+  </div>
+
+  <div className="text-lg font-bold">
+    {gameTitle || "相手チーム"}
   </div>
 
   <button
@@ -446,7 +452,7 @@ const restoreGameHistory = (index: number) => {
       {myBattingSide === "表" ? (
   <>
     <tr className="border-t">
-      <td className="font-bold">自</td>
+      <td>{myTeamName || "自"}</td>
       {myScores.map((score, i) => (
         <td key={i}>{score}</td>
       ))}
@@ -454,7 +460,7 @@ const restoreGameHistory = (index: number) => {
     </tr>
 
     <tr className="border-t">
-      <td className="font-bold">相</td>
+      <td>{gameTitle || "相"}</td>
       {opponentScores.map((score, i) => (
         <td key={i}>
           <input
