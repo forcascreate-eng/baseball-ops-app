@@ -743,7 +743,13 @@ const restoreGameHistory = (index: number) => {
               key={result}
               onClick={() => addResult(playerIndex, result)}
               className={`${
-                outResults.includes(result) ? "bg-gray-600" : "bg-blue-500"
+                result === "併殺打"
+                  ? "bg-red-700"
+                  : result === "失策出塁"
+                  ? "bg-yellow-500"
+                  : outResults.includes(result)
+                  ? "bg-gray-600"
+                  : "bg-blue-500"
               } text-white px-3 py-2 rounded-lg`}
             >
               {result}
