@@ -261,6 +261,15 @@ export default function Home() {
     updated[newIndex] = temp;
     setPlayers(updated);
   };
+    const changeBattingOrder = (fromIndex: number, toIndex: number) => {
+      if (fromIndex === toIndex) return;
+
+      const updated = [...players];
+      const [movedPlayer] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, movedPlayer);
+
+      setPlayers(updated);
+  };
 
   const addPlayer = () => {
   setPlayers((prev) => [
@@ -679,6 +688,20 @@ const restoreGameHistory = (index: number) => {
           >
             ↓
           </button>
+
+          <select
+            value={playerIndex}
+            onChange={(e) =>
+              changeBattingOrder(playerIndex, Number(e.target.value))
+            }
+            className="border px-2 py-1 rounded w-20 bg-white text-black"
+          >
+            {players.map((_, i) => (
+              <option key={i} value={i}>
+                 {i + 1}番
+              </option>
+            ))}
+          </select>
 
           <input
             value={player.number || ""}
