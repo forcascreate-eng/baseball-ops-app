@@ -587,10 +587,6 @@ const restoreGameHistory = (index: number) => {
      {myTotalScore} - {opponentTotalScore}
     </div>
 
-    <div className="text-2xl font-bold mb-3">
-      {gameTitle}
-    </div>
-
     <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
       <div>チーム打率: {teamStats.avg}</div>
       <div>チームOPS: {teamStats.ops}</div>
