@@ -86,6 +86,7 @@ export default function Home() {
   const [gameDate, setGameDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [myTeamName, setMyTeamName] = useState("");
   const [opponentScores, setOpponentScores] = useState<number[]>(
     Array(9).fill(0)
   );
@@ -355,9 +356,19 @@ const restoreGameHistory = (index: number) => {
         野球 OPS記録アプリ
       </h1>
       <div className="bg-white text-black rounded-xl p-4 mb-4 shadow">
+       <label className="font-bold">自チーム名</label>
+
+       <input
+         value={myTeamName}
+         onChange={(e) => setMyTeamName(e.target.value)}
+         placeholder="チーム名"
+         className="border rounded-lg p-2 w-full"
+       />
+
        <label className="block text-sm font-bold mb-1">
-         対戦名
+         相手チーム名
        </label>
+
        <input
          value={gameTitle}
          onChange={(e) => setGameTitle(e.target.value)}
@@ -555,9 +566,18 @@ const restoreGameHistory = (index: number) => {
       {gameTitle || "対戦名未入力"}
     </div>
 
-    <div className="text-3xl font-bold mb-3">
-      自 {myTotalScore} - {opponentTotalScore} 相
+    <div className="text-2xl font-bold mb-3">
+      {myTeamName}
     </div>
+
+    <div className="text-4xl font-bold mb-3">
+     {myTotalScore} - {opponentTotalScore}
+    </div>
+
+    <div className="text-2xl font-bold mb-3">
+      {gameTitle}
+    </div>
+
     <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
       <div>チーム打率: {teamStats.avg}</div>
       <div>チームOPS: {teamStats.ops}</div>
